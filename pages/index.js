@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import styles from "../styles/Home.module.css";
+import { BackgroundImage, Box, Image, rem } from "@mantine/core";
 
 const Overlay = dynamic(() =>
   import("@mantine/core").then((mod) => mod.Overlay)
@@ -19,14 +20,22 @@ const ProductCard = dynamic(() =>
 const ContactCard = dynamic(() =>
   import("../components/ContactCard").then((mod) => mod.ContactCard)
 );
+const Link = dynamic(() => import("next/link"));
 const NextSeo = dynamic(() => import("next-seo").then((mod) => mod.NextSeo));
 
-const HomePage = ({ product }) => {
+const HomePage = ({ product, catalog }) => {
   const transformedData = product.product.map((item) => ({
     image: `https://${process.env.NEXT_PUBLIC_BACKEND}${item.images[0].url}`,
     title: item.name,
     category: item.subcategory,
     description: item.description,
+  }));
+
+  const catalogData = catalog.map((item) => ({
+    image: item.image.url,
+    title: item.name || "Catalog Item",
+    description: item.description || "No description available",
+    fileUrl: item.file.url,
   }));
 
   const renderGrid = (id, title, category) => (
@@ -44,16 +53,39 @@ const HomePage = ({ product }) => {
     </Container>
   );
 
+  const renderCatalog = (catalogData) => (
+    <Container size="md" id="catalog">
+      <Title mb="md" mt="md" align="center">
+        Разгледайте каталогът ни
+      </Title>
+      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl" verticalSpacing="xl">
+        {catalogData.map((item, index) => (
+          <Link
+            key={index}
+            href={`https://${process.env.NEXT_PUBLIC_BACKEND}${item.fileUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              src={`https://${process.env.NEXT_PUBLIC_BACKEND}${item.image}`}
+              alt="katalogova_snimka"
+            />
+          </Link>
+        ))}
+      </SimpleGrid>
+    </Container>
+  );
+
   return (
     <Container fluid mb="100px">
       <NextSeo
-        description="Био препарати за септични ями и битови пречиствателни станции - ефективно решение за отпадни води. Еко продукти за банята, тоалетната и кухнята. Вижте сега!"
+        description="Екопрепарати за септични ями, перилни и почистващи средства: течни, прахообразни, таблетки, капсули, гелове, веро, сапуни – всичко за чист дом!"
         canonical="https://bitova-himia.com/"
         additionalMetaTags={[
           {
             name: "keywords",
             content:
-              "септични ями, биологичен препарат, канализационни системи, битови отпадъчни води",
+              "септични ями, биопрепарати, перилни и почистващи препарати, течни, прахообразни, таблетки и капсули за съдомиялна и пералня, гел, веро, сапуни",
           },
         ]}
         openGraph={{
@@ -61,7 +93,7 @@ const HomePage = ({ product }) => {
           url: "https://bitova-himia.com/",
           title: "Битова химия - Биологични препарати за почистване на дома",
           description:
-            "Био препарати за септични ями и битови пречиствателни станции - ефективно решение за отпадни води. Еко продукти за банята, тоалетната и кухнята. Вижте сега!",
+            "Екопрепарати за септични ями, перилни и почистващи средства: течни, прахообразни, таблетки, капсули, гелове, веро, сапуни – всичко за чист дом!",
           images: [
             {
               url: "https://strapi.agro-export.com/uploads/produkti_2a9dd12eb7.png",
@@ -132,6 +164,7 @@ const HomePage = ({ product }) => {
           `}
         />
       </Container>
+      {renderCatalog(catalogData)}
     </Container>
   );
 };
@@ -140,7 +173,7 @@ export default HomePage;
 
 export async function getStaticProps() {
   const res = await fetch(
-    `https://strapi.agro-export.com/api/products?populate[product][populate][images][fields]=*&filters[slug][$eq]=bio-bitova-himiya`
+    `https://strapi.agro-export.com/api/products?populate[product][populate][images][fields]=*&filters[slug][$eq]=bio-bitova-himiya&populate[catalog][populate][image][fields]=url,alternativeText,width,height&populate[catalog][populate][file][fields]=url,alternativeText`
   );
   const { data } = await res.json();
 
@@ -151,6 +184,7 @@ export async function getStaticProps() {
   return {
     props: {
       product: data[0],
+      catalog: data[0]?.catalog,
     },
     revalidate: 60,
   };
