@@ -23,9 +23,9 @@ const ContactCard = dynamic(() =>
 const Link = dynamic(() => import("next/link"));
 const NextSeo = dynamic(() => import("next-seo").then((mod) => mod.NextSeo));
 
-const HomePage = ({ product, catalog }) => {
+const HomePage = ({ product, catalog, seo }) => {
   const transformedData = product.product.map((item) => ({
-    image: `https://${process.env.NEXT_PUBLIC_BACKEND}${item.images[0].url}`,
+    image: item.images[0].url,
     title: item.name,
     category: item.subcategory,
     description: item.description,
@@ -37,6 +37,21 @@ const HomePage = ({ product, catalog }) => {
     description: item.description || "No description available",
     fileUrl: item.file.url,
   }));
+
+  const transformedSEO = {
+    title: seo.metaTitle,
+    description: seo.metaDescription,
+    canonicalURL: seo.canonicalURL,
+    keywords: seo.keywords,
+    metaSocialTitle: seo.metaSocial[0].title,
+    metaSocialDescription: seo.metaSocial[0].description,
+    metaImageUrl: seo.metaImage.url,
+    metaImageAlternativeText: seo.metaImage.alternativeText,
+    metaImageWidth: seo.metaImage.width,
+    metaImageHeight: seo.metaImage.height,
+  };
+
+  console.log(seo);
 
   const renderGrid = (id, title, category) => (
     <Container size="md" id={id}>
@@ -62,14 +77,11 @@ const HomePage = ({ product, catalog }) => {
         {catalogData.map((item, index) => (
           <Link
             key={index}
-            href={`https://${process.env.NEXT_PUBLIC_BACKEND}${item.fileUrl}`}
+            href={item.fileUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image
-              src={`https://${process.env.NEXT_PUBLIC_BACKEND}${item.image}`}
-              alt="katalogova_snimka"
-            />
+            <Image src={item.image} alt="katalogova_snimka" />
           </Link>
         ))}
       </SimpleGrid>
@@ -79,27 +91,26 @@ const HomePage = ({ product, catalog }) => {
   return (
     <Container fluid mb="100px">
       <NextSeo
-        description="Екопрепарати за септични ями, перилни и почистващи средства: течни, прахообразни, таблетки, капсули, гелове, веро, сапуни – всичко за чист дом!"
-        canonical="https://bitova-himia.com/"
+        title={transformedSEO.title}
+        description={transformedSEO.description}
+        canonical={transformedSEO.canonicalURL}
         additionalMetaTags={[
           {
             name: "keywords",
-            content:
-              "септични ями, биопрепарати, перилни и почистващи препарати, течни, прахообразни, таблетки и капсули за съдомиялна и пералня, гел, веро, сапуни",
+            content: transformedSEO.keywords,
           },
         ]}
         openGraph={{
           type: "website",
-          url: "https://bitova-himia.com/",
-          title: "Битова химия - Биологични препарати за почистване на дома",
-          description:
-            "Екопрепарати за септични ями, перилни и почистващи средства: течни, прахообразни, таблетки, капсули, гелове, веро, сапуни – всичко за чист дом!",
+          url: transformedSEO.canonicalURL,
+          title: transformedSEO.metaSocialTitle,
+          description: transformedSEO.metaSocialDescription,
           images: [
             {
-              url: "https://strapi.agro-export.com/uploads/produkti_2a9dd12eb7.png",
-              width: 526,
-              height: 595,
-              alt: "Bio Bitova Himia",
+              url: transformedSEO.metaImageUrl,
+              alt: transformedSEO.metaImageAlternativeText,
+              width: transformedSEO.metaImageWidth,
+              height: transformedSEO.metaImageHeight,
             },
           ],
         }}
@@ -173,7 +184,7 @@ export default HomePage;
 
 export async function getStaticProps() {
   const res = await fetch(
-    `https://strapi.agro-export.com/api/products?populate[product][populate][images][fields]=*&filters[slug][$eq]=bio-bitova-himiya&populate[catalog][populate][image][fields]=url,alternativeText,width,height&populate[catalog][populate][file][fields]=url,alternativeText`
+    `https://agro-export-backend-strapi-v2-production.up.railway.app/api/products?populate[seo][populate]=*&populate[product][populate]=*&filters[slug][$eq]=bio-bitova-himiya&populate[catalog][populate]=*`
   );
   const { data } = await res.json();
 
@@ -185,6 +196,7 @@ export async function getStaticProps() {
     props: {
       product: data[0],
       catalog: data[0]?.catalog,
+      seo: data[0]?.seo,
     },
     revalidate: 60,
   };

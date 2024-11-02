@@ -15,7 +15,7 @@ module.exports = {
     reactStrictMode: true,
     swcMinify: true,
     images: {
-      domains: [process.env.NEXT_PUBLIC_BACKEND],
+      domains: ["res.cloudinary.com"],
     },
   }),
   ...withBundleAnalyzer({}),
