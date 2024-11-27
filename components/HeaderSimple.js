@@ -5,19 +5,34 @@ import { useDisclosure } from "@mantine/hooks";
 import styles from "../styles/HeaderSimple.module.css";
 
 const Container = dynamic(() =>
-  import("@mantine/core").then((mod) => mod.Container)
-);
-const Group = dynamic(() => import("@mantine/core").then((mod) => mod.Group));
-const Burger = dynamic(() => import("@mantine/core").then((mod) => mod.Burger));
-const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text));
-const Drawer = dynamic(() => import("@mantine/core").then((mod) => mod.Drawer));
-const Box = dynamic(() => import("@mantine/core").then((mod) => mod.Box));
+  import("@mantine/core").then((mod) => mod.Container), {
+    ssr: false,
+  });
+const Group = dynamic(() => import("@mantine/core").then((mod) => mod.Group), {
+  ssr: false,
+});
+const Burger = dynamic(() => import("@mantine/core").then((mod) => mod.Burger), {
+  ssr: false,
+});
+const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text), {
+  ssr: false,
+});
+const Drawer = dynamic(() => import("@mantine/core").then((mod) => mod.Drawer), {
+  ssr: false,
+});
+const Box = dynamic(() => import("@mantine/core").then((mod) => mod.Box), {
+  ssr: false,
+});
 const ScrollArea = dynamic(() =>
   import("@mantine/core").then((mod) => mod.ScrollArea)
-);
+, {
+  ssr: false,
+});
 const Divider = dynamic(() =>
   import("@mantine/core").then((mod) => mod.Divider)
-);
+, {
+  ssr: false,
+});
 const Link = dynamic(() => import("next/link"));
 
 const sections = [

@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import styles from "../styles/Home.module.css";
-import {Image} from "@mantine/core";
+import Image from "next/image";
 
 const Overlay = dynamic(() =>
   import("@mantine/core").then((mod) => mod.Overlay), {
@@ -65,7 +65,14 @@ const HomePage = ({ product, catalog, seo }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Image src={item.image} alt="katalogova_snimka" />
+            <Image src={item.image} alt="katalogova_snimka" width={0} height={0} sizes="(max-width: 768px) 100vw, 33vw"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+          priority
+        />
           </Link>
         ))}
       </SimpleGrid>

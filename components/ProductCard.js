@@ -2,14 +2,22 @@ import dynamic from "next/dynamic";
 import parse from "html-react-parser";
 import styles from "../styles/ProductCard.module.css";
 
-const Card = dynamic(() => import("@mantine/core").then((mod) => mod.Card));
+const Card = dynamic(() => import("@mantine/core").then((mod) => mod.Card), {
+  ssr: false,
+});
 const AspectRatio = dynamic(() =>
   import("@mantine/core").then((mod) => mod.AspectRatio)
-);
-const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text));
+, {
+  ssr: false,
+});
+const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text), {
+  ssr: false,
+});
 const Spoiler = dynamic(() =>
   import("@mantine/core").then((mod) => mod.Spoiler)
-);
+, {
+  ssr: false,
+});
 const Image = dynamic(() => import("next/image"));
 
 export function ProductCard({ image, title, description }) {
