@@ -1,57 +1,41 @@
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import styles from "../styles/Home.module.css";
-import { BackgroundImage, Box, Image, rem } from "@mantine/core";
+import {Image} from "@mantine/core";
 
 const Overlay = dynamic(() =>
-  import("@mantine/core").then((mod) => mod.Overlay)
-);
+  import("@mantine/core").then((mod) => mod.Overlay), {
+    ssr: false,
+  });
 const Container = dynamic(() =>
-  import("@mantine/core").then((mod) => mod.Container)
-);
-const Title = dynamic(() => import("@mantine/core").then((mod) => mod.Title));
-const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text));
+  import("@mantine/core").then((mod) => mod.Container), {
+    ssr: false,
+  });
+const Title = dynamic(() => import("@mantine/core").then((mod) => mod.Title), {
+  ssr: false,
+});
+const Text = dynamic(() => import("@mantine/core").then((mod) => mod.Text), {
+  ssr: false,
+});
 const SimpleGrid = dynamic(() =>
   import("@mantine/core").then((mod) => mod.SimpleGrid)
-);
+, {
+  ssr: false,
+});
 const ProductCard = dynamic(() =>
   import("../components/ProductCard").then((mod) => mod.ProductCard)
-);
+, {
+  ssr: false,
+});
 const ContactCard = dynamic(() =>
   import("../components/ContactCard").then((mod) => mod.ContactCard)
-);
+, {
+  ssr: false,
+});
 const Link = dynamic(() => import("next/link"));
 const NextSeo = dynamic(() => import("next-seo").then((mod) => mod.NextSeo));
 
 const HomePage = ({ product, catalog, seo }) => {
-  const transformedData = product.product.map((item) => ({
-    image: item.images[0].url,
-    title: item.name,
-    category: item.subcategory,
-    description: item.description,
-  }));
-
-  const catalogData = catalog.map((item) => ({
-    image: item.image.url,
-    title: item.name || "Catalog Item",
-    description: item.description || "No description available",
-    fileUrl: item.file.url,
-  }));
-
-  const transformedSEO = {
-    title: seo.metaTitle,
-    description: seo.metaDescription,
-    canonicalURL: seo.canonicalURL,
-    keywords: seo.keywords,
-    metaSocialTitle: seo.metaSocial[0].title,
-    metaSocialDescription: seo.metaSocial[0].description,
-    metaImageUrl: seo.metaImage.url,
-    metaImageAlternativeText: seo.metaImage.alternativeText,
-    metaImageWidth: seo.metaImage.width,
-    metaImageHeight: seo.metaImage.height,
-  };
-
-  console.log(seo);
 
   const renderGrid = (id, title, category) => (
     <Container size="md" id={id}>
@@ -59,7 +43,7 @@ const HomePage = ({ product, catalog, seo }) => {
         {title}
       </Title>
       <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl" verticalSpacing="xl">
-        {transformedData
+        {product
           .filter((item) => item.category === category)
           .map((item) => (
             <ProductCard key={item.title} {...item} />
@@ -68,15 +52,15 @@ const HomePage = ({ product, catalog, seo }) => {
     </Container>
   );
 
-  const renderCatalog = (catalogData) => (
+  const renderCatalog = (catalog) => (
     <Container size="md" id="catalog">
       <Title mb="md" mt="md" align="center">
         Разгледайте каталогът ни
       </Title>
       <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="xl" verticalSpacing="xl">
-        {catalogData.map((item, index) => (
+        {catalog.map((item) => (
           <Link
-            key={index}
+            key={item.id}
             href={item.fileUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -91,26 +75,26 @@ const HomePage = ({ product, catalog, seo }) => {
   return (
     <Container fluid mb="100px">
       <NextSeo
-        title={transformedSEO.title}
-        description={transformedSEO.description}
-        canonical={transformedSEO.canonicalURL}
+        title={seo.title}
+        description={seo.description}
+        canonical={seo.canonicalURL}
         additionalMetaTags={[
           {
             name: "keywords",
-            content: transformedSEO.keywords,
+            content: seo.keywords,
           },
         ]}
         openGraph={{
           type: "website",
-          url: transformedSEO.canonicalURL,
-          title: transformedSEO.metaSocialTitle,
-          description: transformedSEO.metaSocialDescription,
+          url: seo.canonicalURL,
+          title: seo.metaSocialTitle,
+          description: seo.metaSocialDescription,
           images: [
             {
-              url: transformedSEO.metaImageUrl,
-              alt: transformedSEO.metaImageAlternativeText,
-              width: transformedSEO.metaImageWidth,
-              height: transformedSEO.metaImageHeight,
+              url: seo.metaImageUrl,
+              alt: seo.metaImageAlternativeText,
+              width: seo.metaImageWidth,
+              height: seo.metaImageHeight,
             },
           ],
         }}
@@ -158,6 +142,16 @@ const HomePage = ({ product, catalog, seo }) => {
         "Течни сапуни за нежно измиване с натурални екстракти",
         "ABE"
       )}
+      {renderGrid(
+        "lucek",
+        "Ефективни решения за нежно измиване с натурални екстракти",
+        "Lucek"
+      )}
+      {renderGrid(
+        "flesz",
+        "Ефективни решения за нежно измиване с натурални екстракти",
+        "Flesz"
+      )}
       <Container size="sm" mt="xl" mb="xl" id="kontakti">
         <ContactCard
           name="Свържете се с нас"
@@ -175,7 +169,7 @@ const HomePage = ({ product, catalog, seo }) => {
           `}
         />
       </Container>
-      {renderCatalog(catalogData)}
+      {renderCatalog(catalog)}
     </Container>
   );
 };
@@ -183,21 +177,63 @@ const HomePage = ({ product, catalog, seo }) => {
 export default HomePage;
 
 export async function getStaticProps() {
-  const res = await fetch(
-    `https://agro-export-backend-strapi-v2-production.up.railway.app/api/products?populate[seo][populate]=*&populate[product][populate]=*&filters[slug][$eq]=bio-bitova-himiya&populate[catalog][populate]=*`
-  );
-  const { data } = await res.json();
+  const API_URL = `https://agro-export-backend-strapi-v2-production.up.railway.app/api/products?fields[0]=title&fields[1]=slug&fields[2]=description&populate[seo][populate][metaImage][fields][0]=url&populate[seo][populate][metaImage][fields][1]=alternativeText&populate[seo][populate][metaImage][fields][2]=width&populate[seo][populate][metaImage][fields][3]=height&populate[seo][populate][metaSocial]=*&populate[product][populate]=*&populate[catalog][populate][file][fields][0]=url&populate[catalog][populate][image][fields][0]=url&filters[slug][$eq]=bio-bitova-himiya`;
 
-  if (!data || data.length === 0) {
+  try {
+    const res = await fetch(API_URL);
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch API. Status: ${res.status}`);
+    }
+
+    const { data } = await res.json();
+
+    if (!data || data.length === 0) {
+      return { notFound: true };
+    }
+
+    const product = data[0];
+    const seo = product.seo || {};
+
+    const transformedProducts = data[0].product.map((item) => ({
+      id: item.id,
+      image: item.images[0]?.url,
+      title: item.name,
+      category: item.subcategory,
+      description: item.description,
+    }));
+
+    const transformedCatalog = product.catalog.map((item)=> ({
+      id: item.id,
+      image: item.image.url,
+      fileUrl: item.file.url,
+    }))
+
+    // Transform SEO data
+    const transformedSEO = {
+      title: seo.metaTitle || "",
+      description: seo.metaDescription || "",
+      canonicalURL: seo.canonicalURL || "",
+      keywords: seo.keywords || "",
+      metaSocialTitle: seo.metaSocial?.[0]?.title || "",
+      metaSocialDescription: seo.metaSocial?.[0]?.description || "",
+      metaImageUrl: seo.metaImage?.url || "",
+      metaImageAlternativeText: seo.metaImage?.alternativeText || "",
+      metaImageWidth: seo.metaImage?.width || 0,
+      metaImageHeight: seo.metaImage?.height || 0,
+    };
+
+    return {
+      props: {
+        product: transformedProducts,
+        catalog: transformedCatalog,
+        seo: transformedSEO, // Pass the transformed SEO data
+      },
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error.message);
     return { notFound: true };
   }
-
-  return {
-    props: {
-      product: data[0],
-      catalog: data[0]?.catalog,
-      seo: data[0]?.seo,
-    },
-    revalidate: 60,
-  };
 }
+

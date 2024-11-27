@@ -27,6 +27,8 @@ const sections = [
   { id: "ludwik", label: "Ludwik" },
   { id: "vast", label: "VAST" },
   { id: "abe", label: "ABE" },
+  { id: "lucek", label: "Lucek" },
+  { id: "flesz", label: "Flesz" },
   { id: "kontakti", label: "Контакти" },
 ];
 
