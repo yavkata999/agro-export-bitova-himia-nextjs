@@ -4,7 +4,7 @@ import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import AppShellResponsive from "@/components/AppShell";
 import CookieConsent from "react-cookie-consent";
-import { GoogleAnalytics } from "nextjs-google-analytics";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
 function App({ Component, pageProps }) {
@@ -33,7 +33,7 @@ function App({ Component, pageProps }) {
           id="ShinyStat"
           src="//codice.shinystat.com/cgi-bin/getcod.cgi?USER=SS-51204917-cd327"
         />
-        <GoogleAnalytics trackPageViews />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEAASUREMENT_ID} />
         <Component {...pageProps} />
       </AppShellResponsive>
     </MantineProvider>
