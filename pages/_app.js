@@ -33,7 +33,7 @@ function App({ Component, pageProps }) {
           id="ShinyStat"
           src="//codice.shinystat.com/cgi-bin/getcod.cgi?USER=SS-51204917-cd327"
         />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEAASUREMENT_ID} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         <Component {...pageProps} />
       </AppShellResponsive>
     </MantineProvider>
