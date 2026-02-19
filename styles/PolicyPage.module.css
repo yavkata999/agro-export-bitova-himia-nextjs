@@ -1,0 +1,11 @@
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  line-height: 1.7;
+}
+
+.wrapper h1,
+.wrapper h2 {
+  color: #143d2a;
+}

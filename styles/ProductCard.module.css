@@ -1,4 +1,16 @@
-.cardTitle {
-  font-family: "Greycliff CF", var(--mantine-font-family);
-  font-weight: bold;
+.card {
+  background: var(--surface);
+  border: 1px solid #dde9e2;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(21, 41, 31, 0.05);
+}
+
+.card h3 {
+  margin: 0 0 0.6rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
 }

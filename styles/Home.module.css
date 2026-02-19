@@ -1,34 +1,72 @@
-/* styles.css */
-
-/* Define the styles for the hero section */
 .hero {
-  position: relative;
-  background-image: url(https://strapi.agro-export.com/uploads/b2bc608b_984e_4a0c_a0a2_043cf203342c_5c0ec0ad2d.jpg); /* Replace with your background image path */
-  background-size: cover;
-  background-position: center;
-  color: #ffffff; /* Text color */
-  padding: 100px 0;
-  text-align: center;
+  background: radial-gradient(circle at top right, #d5fbe6, #edf8f1 40%, #f7faf9 70%);
+  padding: 4.5rem 1rem 3.2rem;
 }
 
-/* Center the content inside the hero section */
-.container {
-  position: relative;
-  z-index: 1;
+.heroContent {
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Style the title text */
-.title {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.badge {
+  background: #d4f5e3;
+  color: #0f4b2d;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
 }
 
-/* Style the description text */
-.description {
-  font-size: 24px;
-  margin-top: 20px;
-  max-width: 800px; /* Adjust to your desired maximum width */
-  margin-left: auto;
-  margin-right: auto;
+.hero h1 {
+  margin: 1rem 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  max-width: 750px;
+}
+
+.hero p {
+  max-width: 680px;
+  color: var(--muted);
+}
+
+.primaryButton {
+  display: inline-block;
+  margin-top: 1rem;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 1.1rem;
+  border-radius: 10px;
+}
+
+.categories,
+.distributor,
+.contactSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.sectionHeader p,
+.categoryBlock > p,
+.distributor > div > p { color: var(--muted); }
+
+.grid,
+.distributorGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.categoryBlock { margin-bottom: 1.5rem; }
+
+.distributorGrid article {
+  background: #fff;
+  border: 1px solid #dde8e2;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .grid,
+  .distributorGrid {
+    grid-template-columns: 1fr;
+  }
 }

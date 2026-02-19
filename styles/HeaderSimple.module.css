@@ -1,37 +1,55 @@
 .header {
-  height: 56px;
-  margin-bottom: 120px;
-  background-color: var(--mantine-color-body);
-  border-bottom: 1px solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #e4ebe7;
 }
 
 .inner {
-  height: 56px;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+}
+
+.logo {
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
 }
 
 .link {
-  display: block;
-  line-height: 1;
-  padding: 8px 12px;
-  border-radius: var(--mantine-radius-sm);
-  text-decoration: none;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
-  font-size: var(--mantine-font-size-sm);
+  color: #33433b;
   font-weight: 500;
 }
 
-.link:hover {
-  background-color: light-dark(
-    var(--mantine-color-gray-0),
-    var(--mantine-color-dark-6)
-  );
+.burger {
+  display: none;
+  border: 0;
+  background: transparent;
+  font-size: 1.4rem;
 }
 
-[data-mantine-color-scheme] .link[data-active] {
-  background-color: var(--mantine-color-blue-filled);
-  color: var(--mantine-color-white);
+@media (max-width: 768px) {
+  .burger { display: block; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 56px;
+    right: 1rem;
+    background: #fff;
+    border: 1px solid #dce7e0;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.1);
+    flex-direction: column;
+    padding: 0.6rem;
+  }
+  .navOpen { display: flex; }
 }
