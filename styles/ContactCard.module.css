@@ -1,0 +1,12 @@
+/* ContactCard.module.css */
+
+.link-style {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+  }
+
+.paper {
+  padding: var(--mantine-spacing-xl);
+  border-radius: var(--mantine-radius-md);
+}
