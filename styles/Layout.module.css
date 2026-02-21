@@ -1,0 +1,8 @@
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
+.container { width: min(1120px, 92%); margin: 0 auto; }
+.header .container { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+.logo { font-weight: 700; }
+.nav { display: flex; gap: 20px; color: var(--muted); }
+.main { flex: 1; }
+.footer { margin-top: 48px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--muted); background: var(--surface); }
