@@ -1,5 +1,4 @@
-.card { background: #fff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,.05); }
-.image { width: 100%; height: 180px; object-fit: contain; background: #fff; }
-.content { padding: 14px; }
-.category { color: var(--accent); font-weight: 700; font-size: .85rem; text-transform: uppercase; }
-.link { margin-top: 10px; display: inline-block; color: var(--accent); font-weight: 600; }
+.cardTitle {
+  font-family: "Greycliff CF", var(--mantine-font-family);
+  font-weight: bold;
+}
