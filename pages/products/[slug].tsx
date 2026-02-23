@@ -9,18 +9,62 @@ import styles from '@/styles/Products.module.css';
 export default function ProductDetail({ product }: { product: Product }) {
     if (!product) return <div>Продуктът не е намерен</div>;
 
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bitova-himia.com';
+    const productUrl = `${siteUrl}/products/${product.slug}`;
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Професионални препарати",
+                "item": `${siteUrl}/products`
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": product.name,
+                "item": productUrl
+            }
+        ]
+    };
+
+    const productSchema = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": [`${siteUrl}${product.imageUrl}`],
+        "description": product.description,
+        "brand": {
+            "@type": "Brand",
+            "name": "Grupa INCO"
+        },
+        "category": product.category,
+        "offers": {
+            "@type": "AggregateOffer",
+            "offerCount": "1",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "BGN"
+        }
+    };
+
     return (
         <>
             <Head>
-                <title>{`${product.name} | Агро Експорт-Импорт`}</title>
-                <meta name="description" content={product.description.substring(0, 160)} />
+                <title>{`${product.name} | Продукти на Grupa INCO`}</title>
+                <meta name="description" content={`Поръчайте ${product.name} директно от официалния вносител на Grupa INCO за България. Отлични цени на едро и B2B доставки.`} />
+                <link rel="canonical" href={productUrl} />
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
             </Head>
 
             <div className={styles.detailContainer}>
                 <div className={styles.imageColumn}>
                     <Image
                         src={product.imageUrl}
-                        alt={product.name}
+                        alt={`Професионален почистващ препарат на едро: ${product.name}`}
                         width={600}
                         height={600}
                         className={styles.detailImage}
@@ -32,8 +76,8 @@ export default function ProductDetail({ product }: { product: Product }) {
                     <h1 className={styles.detailTitle}>{product.name}</h1>
                     <div className={styles.description} dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }} />
                     <div className={styles.actionArea}>
-                        <Link href="/contact" className={styles.inquireBtn}>Направете запитване</Link>
-                        <Link href="/distributors" className={styles.distributorLink}>Интересувате се от цени на едро?</Link>
+                        <Link href="/contact" className={styles.inquireBtn}>Направете запитване за доставки</Link>
+                        <Link href="/distributors" className={styles.distributorLink}>Търговец на едро? Станете наш дистрибутор</Link>
                     </div>
                 </div>
             </div>

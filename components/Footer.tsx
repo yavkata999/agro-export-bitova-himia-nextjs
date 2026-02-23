@@ -17,7 +17,10 @@ export default function Footer() {
                 </div>
             </div>
             <div className={styles.copyright}>
-                &copy; {new Date().getFullYear()} Агро Експорт-Импорт ООД. Всички права запазени.
+                <p>&copy; {new Date().getFullYear()} Bitova-Himia.com. Всички права запазени.</p>
+                <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', color: 'var(--color-text-muted)' }}>
+                    Проект на <a href="https://agro-export.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline', color: 'inherit' }}>Агро Експорт-Импорт ООД</a> - Изключителен представител на Grupa INCO за България.
+                </p>
             </div>
         </footer>
     );
