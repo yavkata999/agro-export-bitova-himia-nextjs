@@ -12,72 +12,87 @@ export default function ProductDetail({ product }: { product: Product }) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bitova-himia.com';
     const productUrl = `${siteUrl}/products/${product.slug}`;
 
-    const breadcrumbSchema = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Професионални препарати",
-                "item": `${siteUrl}/products`
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": product.name,
-                "item": productUrl
-            }
-        ]
-    };
-
-    const productSchema = {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": product.name,
-        "image": [`${siteUrl}${product.imageUrl}`],
-        "description": product.description,
-        "brand": {
-            "@type": "Brand",
-            "name": "Grupa INCO"
-        },
-        "category": product.category,
-        "offers": {
-            "@type": "AggregateOffer",
-            "offerCount": "1",
-            "availability": "https://schema.org/InStock",
-            "priceCurrency": "BGN"
-        }
-    };
-
     return (
         <>
             <Head>
-                <title>{`${product.name} | Продукти на Grupa INCO`}</title>
-                <meta name="description" content={`Поръчайте ${product.name} директно от официалния вносител на Grupa INCO за България. Отлични цени на едро и B2B доставки.`} />
+                <title>{product.seoTitle || `${product.name} | Продукти на Grupa INCO`}</title>
+                <meta name="description" content={product.seoDescription || `Поръчайте ${product.name} директно от официалния вносител.`} />
                 <link rel="canonical" href={productUrl} />
-                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-                <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
             </Head>
 
             <div className={styles.detailContainer}>
+                {/* Left Side: Sticky Image */}
                 <div className={styles.imageColumn}>
-                    <Image
-                        src={product.imageUrl}
-                        alt={`Професионален почистващ препарат на едро: ${product.name}`}
-                        width={600}
-                        height={600}
-                        className={styles.detailImage}
-                        priority
-                    />
+                    <div className={styles.imageStickyWrapper}>
+                        <Image
+                            src={product.imageUrl}
+                            alt={product.name}
+                            fill
+                            className={styles.detailImage}
+                            priority
+                        />
+                    </div>
                 </div>
+
+                {/* Right Side: Product Info */}
                 <div className={styles.infoColumn}>
-                    <span className={styles.detailCategory}>{product.category}</span>
+                    <div className={styles.tagsWrapper}>
+                        <span className={styles.detailCategory}>{product.category}</span>
+                        {product.brand && <span className={styles.brandTag}>{product.brand}</span>}
+                    </div>
+
                     <h1 className={styles.detailTitle}>{product.name}</h1>
-                    <div className={styles.description} dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }} />
+
+                    {/* Trust Badges - Crucial for B2B */}
+                    <div className={styles.trustBadges}>
+                        <span>✓ Директен внос</span>
+                        <span>✓ Гарантиран произход</span>
+                        <span>✓ Цени на едро</span>
+                    </div>
+
+                    {product.shortDescription && (
+                        <p className={styles.shortDescription}>{product.shortDescription}</p>
+                    )}
+
+                    {product.keyBenefits && product.keyBenefits.length > 0 && (
+                        <div className={styles.benefitsGrid}>
+                            {product.keyBenefits.map((benefit, idx) => (
+                                <div key={idx} className={styles.benefitItem}>
+                                    <svg className={styles.checkIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                    <span>{benefit}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className={styles.marketingDescription} dangerouslySetInnerHTML={{ __html: (product.marketingDescription || product.description).replace(/\n/g, '<br/>') }} />
+
+                    {product.features && product.features.length > 0 && (
+                        <div className={styles.featuresSection}>
+                            <h3>Характеристики:</h3>
+                            <ul className={styles.featuresList}>
+                                {product.features.map((feature, idx) => (
+                                    <li key={idx}>{feature}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {product.usageInstructions && (
+                        <div className={styles.usageBox}>
+                            <h3 className={styles.usageTitle}>Начин на употреба</h3>
+                            <p>{product.usageInstructions}</p>
+                        </div>
+                    )}
+
+                    {/* B2B Action Buttons */}
                     <div className={styles.actionArea}>
-                        <Link href="/contact" className={styles.inquireBtn}>Направете запитване за доставки</Link>
-                        <Link href="/distributors" className={styles.distributorLink}>Търговец на едро? Станете наш дистрибутор</Link>
+                        <Link href="/contact" className={styles.primaryBtn}>
+                            Запитване за оферта
+                        </Link>
+                        <Link href="/distributors" className={styles.secondaryBtn}>
+                            Станете дистрибутор
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --color-primary: #1e3a8a;
   /* Deep professional blue */
