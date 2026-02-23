@@ -1,7 +1,12 @@
 import Head from 'next/head';
 import styles from '@/styles/Distributors.module.css';
+import formStyles from '@/styles/Form.module.css';
+import { useEmailForm } from '@/hooks/useEmailForm';
+import FormAlert from '@/components/FormAlert';
 
 export default function Distributors() {
+    const { handleSubmit, isLoading, isSuccess, error } = useEmailForm();
+
     return (
         <>
             <Head>
@@ -34,28 +39,81 @@ export default function Distributors() {
                         </ul>
                     </div>
 
-                    <div className={styles.formContainer}>
-                        <h2>Свържете се за оферта</h2>
-                        <p className={styles.formNote}>Попълнете формата и наш представител ще се свърже с Вас за обсъждане на индивидуални условия.</p>
-                        {/* cPanel compatible static form submission via standard mailto or simple action */}
-                        <form action="mailto:agro_export@abv.bg" method="post" encType="text/plain" className={styles.form}>
-                            <div className={styles.formGroup}>
+                    <div className={formStyles.formWrapper}>
+                        {/* UPDATED UI MESSAGING */}
+                        <h2>Форма за партньорство на едро</h2>
+                        <p className={formStyles.formNote}>
+                            Попълнете тази форма, ако представлявате бизнес и желаете да получавате цени на едро.
+                            Наш търговски представител ще се свърже с Вас в най-кратък срок.
+                        </p>
+
+                        <FormAlert isSuccess={isSuccess} error={error} successMessage="Благодарим Ви за интереса! Наш представител ще се свърже с Вас скоро." />
+
+                        <form onSubmit={handleSubmit} className={formStyles.form}>
+                            <input type="hidden" name="form_type" value="НОВ ДИСТРИБУТОР" />
+
+                            <div className={formStyles.formGroup}>
                                 <label htmlFor="company">Име на фирмата *</label>
-                                <input type="text" id="company" name="company" required />
+                                <input
+                                    type="text"
+                                    id="company"
+                                    name="company"
+                                    required
+                                    disabled={isLoading}
+                                    minLength={2}
+                                    maxLength={150}
+                                />
                             </div>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="name">Лице за контакт *</label>
-                                <input type="text" id="name" name="name" required />
+                            <div className={formStyles.formGroup}>
+                                <label htmlFor="user_name">Лице за контакт *</label>
+                                <input
+                                    type="text"
+                                    id="user_name"
+                                    name="user_name"
+                                    required
+                                    disabled={isLoading}
+                                    minLength={2}
+                                    maxLength={100}
+                                    pattern="^[\p{L}\s\.\-]+$"
+                                    title="Моля, въведете валидно име (само букви, интервали и тирета)"
+                                />
                             </div>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="phone">Телефон *</label>
-                                <input type="tel" id="phone" name="phone" required />
+                            <div className={formStyles.formGroup}>
+                                <label htmlFor="user_phone">Телефон *</label>
+                                <input
+                                    type="tel"
+                                    id="user_phone"
+                                    name="user_phone"
+                                    required
+                                    disabled={isLoading}
+                                    pattern="^\+?[0-9\s\-\(\)]{5,20}$"
+                                    title="Моля, въведете валиден телефонен номер"
+                                />
                             </div>
-                            <div className={styles.formGroup}>
+                            <div className={formStyles.formGroup}>
+                                <label htmlFor="user_email">Email *</label>
+                                <input
+                                    type="email"
+                                    id="user_email"
+                                    name="user_email"
+                                    required
+                                    disabled={isLoading}
+                                    maxLength={100}
+                                />
+                            </div>
+                            <div className={formStyles.formGroup}>
                                 <label htmlFor="region">Регион на дейност</label>
-                                <input type="text" id="region" name="region" />
+                                <input
+                                    type="text"
+                                    id="region"
+                                    name="region"
+                                    disabled={isLoading}
+                                    maxLength={100}
+                                />
                             </div>
-                            <button type="submit" className={styles.submitBtn}>Изпрати запитване</button>
+                            <button type="submit" className={formStyles.submitBtn} disabled={isLoading}>
+                                {isLoading ? 'Изпращане...' : 'Изпрати запитване'}
+                            </button>
                         </form>
                     </div>
                 </section>

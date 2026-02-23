@@ -1,19 +1,19 @@
 # Агро Експорт-Импорт - B2B Static Website
 
-A highly optimized, completely static Next.js application tailored for B2B distributor acquisition. It has been stripped of runtime backend dependencies (Strapi) and relies solely on static JSON data for maximum performance, security, and hosting compatibility (e.g., cPanel).
+A highly optimized, completely static Next.js application tailored for B2B distributor acquisition. It has been stripped of runtime backend dependencies and relies solely on static JSON data for maximum performance, security, and hosting compatibility.
 
-## Tech Stack
+## Architecture
 - Next.js 14 (Pages Router, Static Export)
 - TypeScript
-- CSS Modules (No heavy frameworks)
+- CSS Modules
 - Jest & React Testing Library
+- **EmailJS** (Browser SDK for form processing without API routes)
 
-## Prerequisites
-- Node.js (v18 or newer)
-- npm or yarn
+## Environment Variables
 
-## Installation
+Create a `.env.local` file in the root directory and add your EmailJS configuration. These variables must start with `NEXT_PUBLIC_` to be accessible in the static export build.
 
-1. Install dependencies:
-```bash
-npm install
+```env
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key

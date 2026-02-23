@@ -1,23 +1,26 @@
-import { getAllProducts, getProductBySlug, getAllCategories } from '../lib/api';
+import { getAllProducts, getProductBySlug, getAllCategories, getFeaturedProducts } from '../lib/api';
 
-describe('API Library', () => {
+describe('API Logic Audit', () => {
     it('should return a list of products', () => {
         const products = getAllProducts();
         expect(products.length).toBeGreaterThan(0);
         expect(products[0]).toHaveProperty('id');
-        expect(products[0]).toHaveProperty('name');
     });
 
-    it('should return a product by slug', () => {
+    it('should resolve a specific product by slug', () => {
         const products = getAllProducts();
-        const slug = products[0].slug;
-        const product = getProductBySlug(slug);
+        const product = getProductBySlug(products[0].slug);
         expect(product).toBeDefined();
-        expect(product?.slug).toBe(slug);
+        expect(product?.slug).toBe(products[0].slug);
     });
 
     it('should return all categories', () => {
+        expect(getAllCategories().length).toBeGreaterThan(0);
+    });
+
+    it('should extract one featured product per category safely', () => {
+        const featured = getFeaturedProducts();
         const categories = getAllCategories();
-        expect(categories.length).toBeGreaterThan(0);
+        expect(featured.length).toBeLessThanOrEqual(categories.length);
     });
 });

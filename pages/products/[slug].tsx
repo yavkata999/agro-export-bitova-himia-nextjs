@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { getAllProducts, getProductBySlug } from '@/lib/api';
 import { Product } from '@/types';
@@ -23,6 +24,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                         width={600}
                         height={600}
                         className={styles.detailImage}
+                        priority
                     />
                 </div>
                 <div className={styles.infoColumn}>
@@ -30,7 +32,8 @@ export default function ProductDetail({ product }: { product: Product }) {
                     <h1 className={styles.detailTitle}>{product.name}</h1>
                     <div className={styles.description} dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }} />
                     <div className={styles.actionArea}>
-                        <a href="/contact" className={styles.inquireBtn}>Направете запитване</a>
+                        <Link href="/contact" className={styles.inquireBtn}>Направете запитване</Link>
+                        <Link href="/distributors" className={styles.distributorLink}>Интересувате се от цени на едро?</Link>
                     </div>
                 </div>
             </div>
@@ -39,17 +42,13 @@ export default function ProductDetail({ product }: { product: Product }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const products = getAllProducts();
-    const paths = products.map((product) => ({
+    const paths = getAllProducts().map((product) => ({
         params: { slug: product.slug },
     }));
-
     return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const product = getProductBySlug(params?.slug as string);
-    return {
-        props: { product },
-    };
+    return { props: { product } };
 };

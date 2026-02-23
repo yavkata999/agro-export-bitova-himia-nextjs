@@ -96,6 +96,19 @@
     background-color: var(--color-primary-hover);
 }
 
+.distributorLink {
+    display: block;
+    margin-top: 1rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: underline;
+    font-size: 0.95rem;
+}
+
+.distributorLink:hover {
+    color: var(--color-primary-hover);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .title {
