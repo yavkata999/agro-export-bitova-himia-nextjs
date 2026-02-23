@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '@/styles/Distributors.module.css';
 import formStyles from '@/styles/Form.module.css';
 import { useEmailForm } from '@/hooks/useEmailForm';
@@ -40,11 +41,10 @@ export default function Distributors() {
                     </div>
 
                     <div className={formStyles.formWrapper}>
-                        {/* UPDATED UI MESSAGING */}
-                        <h2>Форма за партньорство на едро</h2>
+                        <h2>B2B Форма за партньорство</h2>
                         <p className={formStyles.formNote}>
                             Попълнете тази форма, ако представлявате бизнес и желаете да получавате цени на едро.
-                            Наш търговски представител ще се свърже с Вас в най-кратък срок.
+                            Ако сте краен клиент, моля, използвайте <Link href="/contact" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>формата за общи запитвания</Link>.
                         </p>
 
                         <FormAlert isSuccess={isSuccess} error={error} successMessage="Благодарим Ви за интереса! Наш представител ще се свърже с Вас скоро." />

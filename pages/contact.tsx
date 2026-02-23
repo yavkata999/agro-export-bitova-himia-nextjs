@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '@/styles/Contact.module.css';
 import formStyles from '@/styles/Form.module.css';
 import { useEmailForm } from '@/hooks/useEmailForm';
@@ -37,8 +38,9 @@ export default function Contact() {
                         <h2>Форма за общи запитвания</h2>
                         <p className={formStyles.formNote}>
                             Използвайте тази форма за въпроси относно продукти, наличности или обща информация за крайни клиенти.
-                            Ако сте търговец, моля, използвайте <a href="/distributors" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>формата за дистрибутори</a>.
+                            Ако сте търговец, моля, използвайте <Link href="/distributors" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>формата за дистрибутори</Link>.
                         </p>
+
                         <FormAlert isSuccess={isSuccess} error={error} />
                         <form onSubmit={handleSubmit} className={formStyles.form}>
                             <input type="hidden" name="form_type" value="ОБЩО ЗАПИТВАНЕ ОТ КЛИЕНТ" />
