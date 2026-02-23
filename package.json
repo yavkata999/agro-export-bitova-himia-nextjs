@@ -9,7 +9,7 @@
     "start": "next start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",

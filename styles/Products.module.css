@@ -40,12 +40,11 @@
    ========================================= */
 .categoryNavWrapper {
     position: sticky;
-    top: 70px;
-    /* Aligns exactly under the main header line */
+    top: 80px;
+    /* EXACTLY matches your Header height (80px) */
     z-index: 100;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    /* Modern frosted glass effect */
     padding: 1rem 0;
     margin-bottom: 3.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -93,7 +92,6 @@
 .categorySection {
     margin-bottom: 5rem;
     scroll-margin-top: 160px;
-    /* Prevents sticky nav from covering section titles */
 }
 
 .sectionInfo {

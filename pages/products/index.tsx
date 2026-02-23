@@ -89,6 +89,19 @@ export default function Products({ products }: { products: Product[] }) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-    const products = getAllProducts();
+    const allProducts = getAllProducts();
+
+    const products = allProducts.map((product) => ({
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        category: product.category,
+        imageUrl: product.imageUrl,
+        shortDescription: product.shortDescription || null,
+        seoDescription: product.seoDescription || null,
+        description: product.description ? product.description.substring(0, 120) : "",
+        seoTitle: product.seoTitle || null,
+    }));
+
     return { props: { products } };
 };
