@@ -12,7 +12,7 @@ export default function Header() {
         <header className={styles.header}>
             <div className={styles.inner}>
                 <div className={styles.logo}>
-                    <Link href="/" onClick={closeMenu}>Агро Експорт-Импорт</Link>
+                    <Link href="/" onClick={closeMenu}>Битова Химия</Link>
                 </div>
 
                 <button

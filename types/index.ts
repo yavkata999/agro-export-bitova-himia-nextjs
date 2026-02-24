@@ -16,6 +16,8 @@ export interface Product {
     targetClients?: string[];
     brand?: string;
     metaKeywords?: string[];
+
+    safetyDataSheetUrl?: string;
 }
 
 export interface DataStore {

@@ -41,10 +41,11 @@
 .categoryNavWrapper {
     position: sticky;
     top: 80px;
-    /* EXACTLY matches your Header height (80px) */
+    /* Aligns exactly under the main header line */
     z-index: 100;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+    /* Modern frosted glass effect */
     padding: 1rem 0;
     margin-bottom: 3.5rem;
     border-bottom: 1px solid #e5e7eb;
@@ -92,6 +93,7 @@
 .categorySection {
     margin-bottom: 5rem;
     scroll-margin-top: 160px;
+    /* Prevents sticky nav from covering section titles */
 }
 
 .sectionInfo {
@@ -293,7 +295,7 @@
     border-left: 5px solid var(--color-primary);
     padding: 1.75rem;
     border-radius: 0 8px 8px 0;
-    margin-bottom: 3.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .usageTitle {
@@ -301,6 +303,38 @@
     margin-bottom: 0.75rem;
     font-size: 1.15rem;
     font-weight: 700;
+}
+
+/* Document Button (ИЛБ) - Desktop (Smaller, subtle) */
+.docBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    transition: all 0.2s ease;
+    width: max-content;
+}
+
+.docBtn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.docIcon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-primary);
 }
 
 /* CTA Action Area */
@@ -365,6 +399,12 @@
     }
 }
 
+@media (max-width: 968px) {
+    .detailContainer {
+        margin: 2rem auto;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0 15px;
@@ -407,6 +447,22 @@
 
     .benefitsGrid {
         grid-template-columns: 1fr;
+    }
+
+    /* Restore the larger, touch-friendly doc button size for Mobile */
+    .docBtn {
+        width: 100%;
+        justify-content: center;
+        padding: 0.85rem 1.25rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+    }
+
+    .docIcon {
+        width: 24px;
+        height: 24px;
     }
 
     .actionArea {
